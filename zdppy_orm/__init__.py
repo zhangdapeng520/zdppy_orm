@@ -3237,7 +3237,12 @@ class Database(_callable_context_manager):
     def _connect(self):
         raise NotImplementedError
 
-    def connect(self, reuse_if_open=False):
+    def connect(self, reuse_if_open: bool = False) -> bool:
+        """
+        连接到数据库
+        :param reuse_if_open: 是否重用已经打开的连接
+        :return: None
+        """
         with self._lock:
             if self.deferred:
                 raise InterfaceError('Error, database must be initialized '
