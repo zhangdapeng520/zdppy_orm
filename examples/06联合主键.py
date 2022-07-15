@@ -1,13 +1,13 @@
 import datetime
 
-from peewee import *
+from zdppy_orm import *
 import logging
 
-logger = logging.getLogger("peewee")
+logger = logging.getLogger("zdppy_orm")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
 
-db = MySQLDatabase('peewee', host='127.0.0.1', user='root', passwd='root')
+db = MySQLDatabase('zdppy_orm', host='127.0.0.1', user='root', passwd='root')
 
 
 class BaseModel(Model):
@@ -15,6 +15,7 @@ class BaseModel(Model):
 
     class Meta:
         database = db  # 这里是数据库链接，为了方便建立多个表，可以把这个部分提炼出来形成一个新的类
+
 
 #
 # class Person(BaseModel):
@@ -35,6 +36,7 @@ class Person(BaseModel):
     last = CharField()
 
     class Meta:
+        # 联合主键
         primary_key = CompositeKey('first', 'last')
 
 
@@ -44,6 +46,7 @@ class Pet(BaseModel):
     pet_name = CharField()
 
     class Meta:
+        # 使用联合主键作为外键
         constraints = [SQL('FOREIGN KEY(owner_first, owner_last) REFERENCES person(first, last)')]
 
 
@@ -53,6 +56,7 @@ class Blog(BaseModel):
 
 class Tag(BaseModel):
     pass
+
 
 # 复合主键
 class BlogToTag(BaseModel):
@@ -65,7 +69,7 @@ class BlogToTag(BaseModel):
 
 
 class User(BaseModel):
-    #如果没有设置主键，那么自动生成一个id的主键
+    # 如果没有设置主键，那么自动生成一个id的主键
     username = CharField(max_length=20)
     age = CharField(default=18, max_length=20, verbose_name="年龄")
 
@@ -96,7 +100,7 @@ if __name__ == "__main__":
 
     # person = Person.select().where((Person.first=="li") & (Person.first=="li1"))
     # print(person.sql())
-    #like
+    # like
     # query = Person.select().where(Person.first.startswith('bo'))
 
     # person = Person.select().order_by(Person.id.desc())
@@ -111,7 +115,7 @@ if __name__ == "__main__":
     # for user in users:
     #     print(user.username, user.age)
 
-    #distinct去重, count方法统计数量
+    # distinct去重, count方法统计数量
     # query = User.select(User.username).distinct().count()
     # print(query)
     # for q in query:
@@ -127,8 +131,8 @@ if __name__ == "__main__":
     # for q in query:
     #     print(q.username)
 
-    # query = User.raw('SELECT * FROM new_user WHERE username = %s', "bobby5")
+    # query = User.raw('SELECT * FROM new_user WHERE username = %s', "zhangsan")
 
-    query = User.select().where(SQL('username = "%s"' % "bobby5"))
+    query = User.select().where(SQL('username = "%s"' % "zhangsan"))
     for q in query:
         print(q.username, q.age)

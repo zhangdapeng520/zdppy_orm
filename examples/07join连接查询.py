@@ -1,13 +1,13 @@
 import datetime
 
-from peewee import *
+from zdppy_orm import *
 import logging
 
-logger = logging.getLogger("peewee")
+logger = logging.getLogger("zdppy_orm")
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler())
 
-db = MySQLDatabase('peewee', host='127.0.0.1', user='root', passwd='root')
+db = MySQLDatabase('zdppy_orm', host='127.0.0.1', user='root', passwd='root')
 
 
 class BaseModel(Model):
@@ -76,6 +76,7 @@ if __name__ == "__main__":
     query = Tweet.select(Tweet, User.username).join(User, on=(Tweet.user == User.id)).where(User.username == "mickey")
     for q in query:
         print(q.user.username, q.content)
+
     # 反向
     user = User.get(User.username == "mickey")
     tweets = Tweet.select().where(Tweet.user == user)
@@ -97,3 +98,6 @@ if __name__ == "__main__":
         User).where(User.username == "mickey")
     for q in query:
         print(q.user.username, q.content)
+
+    # 删除表，要先删除外键
+    db.drop_tables([Favorite, Tweet, User])
