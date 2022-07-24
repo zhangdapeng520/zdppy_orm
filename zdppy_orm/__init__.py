@@ -4935,6 +4935,10 @@ class DecimalField(Field):
 
 
 class _StringField(Field):
+    """
+    字符串类型的字段
+    """
+
     def adapt(self, value):
         if isinstance(value, text_type):
             return value
@@ -4950,6 +4954,9 @@ class _StringField(Field):
 
 
 class CharField(_StringField):
+    """
+    对应MySQL中varchar类型的字段
+    """
     field_type = 'VARCHAR'
 
     def __init__(self, max_length=255, *args, **kwargs):
@@ -5399,6 +5406,9 @@ class IPField(BigIntegerField):
 
 
 class BooleanField(Field):
+    """
+    布尔类型的字段
+    """
     field_type = 'BOOL'
     adapt = bool
 
@@ -5414,6 +5424,9 @@ class BareField(Field):
 
 
 class ForeignKeyField(Field):
+    """
+    外键类型的字段
+    """
     accessor_class = ForeignKeyAccessor
     backref_accessor_class = BackrefAccessor
 
