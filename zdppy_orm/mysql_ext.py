@@ -11,13 +11,13 @@ try:
 except ImportError:
     mariadb = None
 
-from peewee import ImproperlyConfigured
-from peewee import Insert
-from peewee import MySQLDatabase
-from peewee import NodeList
-from peewee import SQL
-from peewee import TextField
-from peewee import fn
+from . import ImproperlyConfigured
+from . import Insert
+from . import MySQLDatabase
+from . import NodeList
+from . import SQL
+from . import TextField
+from . import fn
 
 
 class MySQLConnectorDatabase(MySQLDatabase):
